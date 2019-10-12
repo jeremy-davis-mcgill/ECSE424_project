@@ -1,6 +1,6 @@
 To compile and run the project:
 
-1) Download QT Creator IDE: https://www.qt.io/download
+1) Download QT Creator IDE: https://www.qt.io/download (download the free open-source version)
 
 2) Once you have QT running, go File -> Open File or Project
 
