@@ -2,7 +2,12 @@ To compile and run the project:
 
 1) Download QT Designer: https://build-system.fman.io/qt-designer-download
 
-2) There are three main files to the project: 
+2) Download PyQt5 and psutil the following pip commands in the terminal:
+   
+   - pip install PyQt5
+   - pip install psutil
+
+3) There are three main files to the project: 
    
    - mainwindow.ui  : This is the ui design of the main window that can be modified in Qt Designer
    - popupwindow.ui : This is the ui design of a popup window that can be mofified in Qt Designer
