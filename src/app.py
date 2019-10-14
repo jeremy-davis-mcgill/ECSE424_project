@@ -7,8 +7,6 @@ import psutil
 Ui_MainWindow, QtBaseClass = uic.loadUiType("mainwindow.ui")
 LandingPageUI, LandingPageBase = uic.loadUiType("popupwindow.ui")
 
-
-
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Below, we initialize the process thread
@@ -44,11 +42,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.child_win = PopupWindow(self)
 		self.child_win.show()
 
-def Start():
-	window = MyApp()
-	window.show()
-	return window
-
 class PopupWindow(LandingPageBase, LandingPageUI):                       
     def __init__(self, parent=None):
         super().__init__()
@@ -75,12 +68,12 @@ if __name__ == "__main__":
 	app=QtWidgets.QApplication.instance()
 	if not app: 
          app = QtWidgets.QApplication(sys.argv)
+	window = MyApp()
+	window.show()
 
-
-	window = Start()
 	PROCNAME = "python.exe"
 
 	for proc in psutil.process_iter():
 		print(proc)
-
+		
 	sys.exit(app.exec_())
