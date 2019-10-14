@@ -13,12 +13,32 @@ import psutil
 Ui_MainWindow, QtBaseClass = uic.loadUiType("mainwindow.ui")
 LandingPageUI, LandingPageBase = uic.loadUiType("popupwindow.ui")
 
+# Below, is a global list that can be used to store a snapshot of all process ids running at a given momemnt.
+running_processes = []
+
+# Global Lock Status Variable
+lockActive = False
+
+# Below is a helper function for ther class WorkerObject
+def ignore_process(self, proc):
+	if proc.name() == "backgroundTaskHost.exe":
+		return True
+	if proc.name() == "dllhost.exe":
+		return True
+	if proc.name() == "svchost.exe":
+		return True
+	if proc.name() == "WmiPrvSE.exe":
+		return True
+	return False
+
 # Class MyApp
 # The class below is responsible for running the main window.
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Below, we initialize the thread that continuously monitors the computer's processes
 	signal_start_background_job = QtCore.pyqtSignal()
+
+
 
 	# Below, we initialize the MyApp class
 	def __init__(self):
@@ -39,6 +59,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.back_page_Button.clicked.connect(lambda: self.back_button_clicked())
 		self.m1Home.clicked.connect(lambda: self.popup_test_button_clicked())
 		self.actionSettings.triggered.connect(lambda: self.settings_button_clicked())
+		self.lockButton.clicked.connect(lambda: self.lock_button_clicked())
 
 		# Start thread
 		self.thread.start()
@@ -55,29 +76,56 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.child_win = PopupWindow(self)
 		self.child_win.show()
 
+	def lock_button_clicked(self):
+		global lockActive
+
+		if lockActive == True:
+			lockActive = False
+
+			self.lockStatus.setText("Lock Inactive")
+			return
+		if lockActive == False:
+			lockActive = True
+			global running_processes
+			running_processes.clear()
+			for proc in psutil.process_iter():
+				running_processes.append(proc.pid);
+				print(proc)
+			self.lockStatus.setText("Lock Active")
+			return
+
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
     def __init__(self, parent=None):
         super().__init__()
         LandingPageBase.__init__(self, parent)
         self.setupUi(self)    
+        self.okButton.clicked.connect(lambda: self.close_popup())
+
+    def close_popup(self):
+    	self.close()
+
 
 # The class below is the process monitoring thread.
 class WorkerObject(QtCore.QObject):
 	@QtCore.pyqtSlot()
 
+		# Below, we have an infinite while loop so that the thread never terminates
 	def background_job(self):
 
-		# Below, we have an infinite while loop so that the thread never terminates
 		while 1 < 2:
 
 			# Inside this while loop, we can scan all the processes using psutil
-			print("Scanning Processes")
-			PROCNAME = "OculusClient.exe"
-
-			for proc in psutil.process_iter():
-				if proc.name() == PROCNAME:
-					print("Oculus Found")
+			if lockActive == False:
+				print("Lock Inactive")
+			if lockActive == True:
+				print("Lock Active")
+				print("Scanning Processes")
+				for proc in psutil.process_iter():
+					if proc.pid not in running_processes:
+						if  ignore_process(self, proc) == False:
+							print("New process Found: ")
+							print(proc.name())
 			sleep(1)
 		pass
 
@@ -87,10 +135,5 @@ if __name__ == "__main__":
          app = QtWidgets.QApplication(sys.argv)
 	window = MyApp()
 	window.show()
-
-
-	# Testing psutil below to show all the currently running processes
-	for proc in psutil.process_iter():
-		print(proc)
 
 	sys.exit(app.exec_())
