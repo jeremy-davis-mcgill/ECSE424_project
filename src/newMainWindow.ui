@@ -317,16 +317,6 @@
            <number>2</number>
           </property>
          </widget>
-         <widget class="QListView" name="ListPrograms">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>80</y>
-            <width>256</width>
-            <height>241</height>
-           </rect>
-          </property>
-         </widget>
          <widget class="QPushButton" name="AddMoreButton">
           <property name="geometry">
            <rect>
@@ -367,6 +357,26 @@
             <width>40</width>
             <height>40</height>
            </size>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="notificationTime">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>330</y>
+            <width>113</width>
+            <height>25</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QListWidget" name="ListPrograms">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>256</width>
+            <height>192</height>
+           </rect>
           </property>
          </widget>
         </widget>
