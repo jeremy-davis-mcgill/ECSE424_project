@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets, QtCore, uic
 from PyQt5.QtCore import QThread, QThreadPool
 from PyQt5.QtWidgets import QDesktopWidget
 from time import sleep
+import getpass
 
 # Sys is imported so we can use the sleep() command
 import sys
@@ -12,6 +13,7 @@ import psutil
 
 # Below, we load the .ui files
 Ui_MainWindow, QtBaseClass = uic.loadUiType("newMainwindow.ui")
+Ui_SmallIconWindow, QtBaseClass = uic.loadUiType("iconWindow.ui")
 LandingPageUI, LandingPageBase = uic.loadUiType("popupwindow.ui")
 
 # Below, is a global list that can be used to store a snapshot of all process ids running at a given momemnt.
@@ -32,6 +34,30 @@ def ignore_process(self, proc):
 	if proc.name() == "WmiPrvSE.exe":
 		return True
 	return False
+
+class Icon(QtWidgets.QMainWindow, Ui_SmallIconWindow):
+	def __init__(self):
+		QtWidgets.QMainWindow.__init__(self)
+		Ui_SmallIconWindow.__init__(self)
+		self.setWindowSizeAndPosition()
+		self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
+		self.setupUi(self)
+
+		self.OpenButton.clicked.connect(lambda: self.openWindow())
+
+	def openWindow(self):
+		window = MyApp()
+		window.show()
+		self.close()
+
+	def setWindowSizeAndPosition(self):
+		ag = QDesktopWidget().availableGeometry()
+		sg = QDesktopWidget().screenGeometry()
+		self.setFixedSize(50, 50)
+		widget = self.geometry()
+		x = ag.width()-widget.width()
+		y = ag.height()/2
+		self.move(x-200, y)	
 
 # Class MyApp
 # The class below is responsible for running the main window.
@@ -62,10 +88,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		# Here, we link the buttons of the main page to the functions below
 		self.back_page_Button.clicked.connect(lambda: self.back_button_clicked())
 		self.ProgramName.setText("Adobe Reader")
-		self.exitButton.clicked.connect(lambda: self.close())
+		self.exitButton.clicked.connect(lambda: self.exit_button_clicked())
 		self.lockToProgram.clicked.connect(lambda:self.lock_button_clicked())
 		self.unlockButton.clicked.connect(lambda:self.unlock_button_clicked())
-		self.LockedPage.hide()
+		global lockActive
+		if not lockActive:
+			self.LockedPage.hide()
 
 		# Start thread
 		self.thread.start()
@@ -101,6 +129,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		lockActive = False
 		self.LockedPage.hide()
 
+	def exit_button_clicked(self):
+		window = Icon()
+		window.show()
+		self.hide()
+
+
 
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
@@ -129,10 +163,13 @@ class WorkerObject(QtCore.QObject):
 			if lockActive == True:
 				print("Lock Active")
 				print("Scanning Processes")
-				for proc in psutil.process_iter():
-					if proc.pid not in running_processes:
-						if  ignore_process(self, proc) == False:
-							print("New process Found: ")
+				for proc in psutil.process_iter(attrs = ['username']):
+					#print(proc.info['username'])
+					#print(getpass.getuser())
+					#if proc.pid not in running_processes:
+					if proc.info['username'] == "DESKTOP-D7UQ8QR\Jimmy":
+							#if  ignore_process(self, proc) == False:
+							#print("New process Found: ")
 							print(proc.name())
 							running_processes.append(proc.pid)
 							processNum = processNum+1
@@ -143,7 +180,7 @@ if __name__ == "__main__":
 	app=QtWidgets.QApplication.instance()
 	if not app: 
          app = QtWidgets.QApplication(sys.argv)
-	window = MyApp()
+	window = Icon()
 	window.show()
 
 	sys.exit(app.exec_())
