@@ -1,5 +1,5 @@
 # Below, we import our libraries
-from PyQt5 import QtWidgets, QtCore, uic
+from PyQt5 import QtWidgets, QtCore, uic, QtGui
 from PyQt5.QtCore import QThread, QThreadPool
 from PyQt5.QtWidgets import QDesktopWidget
 from time import sleep
@@ -22,6 +22,7 @@ processNum = 0
 
 # Global Lock Status Variable
 lockActive = False
+threadProcessRunning = False
 
 # Below is a helper function for ther class WorkerObject
 def ignore_process(self, proc):
@@ -42,7 +43,7 @@ class Icon(QtWidgets.QMainWindow, Ui_SmallIconWindow):
 		self.setWindowSizeAndPosition()
 		self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
 		self.setupUi(self)
-
+		self.checkButtonIcon()
 		self.OpenButton.clicked.connect(lambda: self.openWindow())
 
 	def openWindow(self):
@@ -58,6 +59,18 @@ class Icon(QtWidgets.QMainWindow, Ui_SmallIconWindow):
 		x = ag.width()-widget.width()
 		y = ag.height()/2
 		self.move(x-200, y)	
+
+	def checkButtonIcon(self):
+		global lockActive
+		btn = self.OpenButton
+		icon = QtGui.QIcon()
+		if lockActive:
+			icon.addPixmap(QtGui.QPixmap("lock.png"))
+		else:
+			icon.addPixmap(QtGui.QPixmap("unlock.png"))
+		btn.setIcon(icon)
+		btn.setIconSize(QtCore.QSize(50,50))
+
 
 # Class MyApp
 # The class below is responsible for running the main window.
@@ -80,8 +93,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.worker = WorkerObject()
 		self.thread = QtCore.QThread()
 		self.worker.moveToThread(self.thread)
-
-
 		# Here we tell the thread to execute the background_job function of class WorkerObject
 		self.signal_start_background_job.connect(self.worker.background_job)
 
@@ -96,8 +107,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 			self.LockedPage.hide()
 
 		# Start thread
-		self.thread.start()
-		self.signal_start_background_job.emit()
+		global threadProcessRunning
+		if not threadProcessRunning:
+			self.thread.start()
+			self.signal_start_background_job.emit()
+			threadProcessRunning = True;
 
 	def setWindowSizeAndPosition(self):
 		ag = QDesktopWidget().availableGeometry()
@@ -133,8 +147,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		window = Icon()
 		window.show()
 		self.hide()
-
-
 
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
