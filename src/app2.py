@@ -1,9 +1,10 @@
 # Below, we import our libraries
 from PyQt5 import QtWidgets, QtCore, uic, QtGui
-from PyQt5.QtCore import QThread, QThreadPool
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtCore import QThread, QThreadPool, QFileInfo
+from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
 from time import sleep
 import getpass
+import win32gui
 
 # Sys is imported so we can use the sleep() command
 import sys
@@ -101,10 +102,17 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.ProgramName.setText("Adobe Reader")
 		self.exitButton.clicked.connect(lambda: self.exit_button_clicked())
 		self.lockToProgram.clicked.connect(lambda:self.lock_button_clicked())
+		self.SetNotification.clicked.connect(lambda:self.setNotification_button_clicked())
+		self.setAndLock.clicked.connect(lambda: self.lock_button_clicked())
 		self.unlockButton.clicked.connect(lambda:self.unlock_button_clicked())
+		self.return_2.clicked.connect(lambda:self.return_button_clicked())
+		self.AddMoreButton.clicked.connect(lambda:self.AddMoreButton_clicked())
+		self.notificationTime.textChanged.connect(lambda:self.on_notificationTime_changed())
+
 		global lockActive
 		if not lockActive:
 			self.LockedPage.hide()
+		self.SettingPage.hide()
 
 		# Start thread
 		global threadProcessRunning
@@ -136,6 +144,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		#To-Do
 		global lockActive
 		lockActive = True
+		self.SettingPage.hide()
 		self.LockedPage.show()
 
 	def unlock_button_clicked(self):
@@ -143,10 +152,36 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		lockActive = False
 		self.LockedPage.hide()
 
+	def setNotification_button_clicked(self):
+		self.SettingPage.show()
+
 	def exit_button_clicked(self):
 		window = Icon()
 		window.show()
 		self.hide()
+
+	def return_button_clicked(self):
+		self.SettingPage.hide()
+
+	def AddMoreButton_clicked(self):
+		global filename
+
+		fname, _ = QFileDialog.getOpenFileName(self, 'Open file', '/home')
+		filename = QFileInfo(fname).fileName()
+		print(format(filename))
+		
+		index = self.ListPrograms.currentRow()
+		#filename[index] = ("%s" % (filename))
+		self.ListPrograms.addItem("%s    %s min" %(filename, self.notificationTime.text()))
+
+	def on_notificationTime_changed(self):
+		for item in self.ListPrograms.selectedItems():
+			currentText = item.text()
+			print(currentText)
+			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
+			print(currentFileName)
+			
+			item.setText("%s    %s min" %(format(currentFileName[0]), self.notificationTime.text()))
 
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
@@ -164,6 +199,8 @@ class PopupWindow(LandingPageBase, LandingPageUI):
 class WorkerObject(QtCore.QObject):
 	@QtCore.pyqtSlot()
 
+	
+
 		# Below, we have an infinite while loop so that the thread never terminates
 	def background_job(self):
 		global processNum
@@ -175,16 +212,10 @@ class WorkerObject(QtCore.QObject):
 			if lockActive == True:
 				print("Lock Active")
 				print("Scanning Processes")
-				for proc in psutil.process_iter(attrs = ['username']):
-					#print(proc.info['username'])
-					#print(getpass.getuser())
-					#if proc.pid not in running_processes:
-					if proc.info['username'] == "DESKTOP-D7UQ8QR\Jimmy":
-							#if  ignore_process(self, proc) == False:
-							#print("New process Found: ")
-							print(proc.name())
-							running_processes.append(proc.pid)
-							processNum = processNum+1
+				def winEnumHandler( hwnd, ctx ):
+					if win32gui.IsWindowVisible( hwnd ):
+						print (hex(hwnd), win32gui.GetWindowText( hwnd ))
+				win32gui.EnumWindows( winEnumHandler, None )
 			sleep(1)
 		pass
 

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>593</height>
+    <height>1098</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -607,6 +607,35 @@
             <width>231</width>
             <height>141</height>
            </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="return_2">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>440</y>
+            <width>231</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>return</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>unlock.png</normaloff>unlock.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
           </property>
          </widget>
         </widget>
