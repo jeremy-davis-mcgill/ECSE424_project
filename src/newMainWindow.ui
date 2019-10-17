@@ -31,6 +31,11 @@
     <height>2000</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -75,9 +80,9 @@
         <widget class="QPushButton" name="lockToProgram">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>0</x>
            <y>120</y>
-           <width>231</width>
+           <width>271</width>
            <height>61</height>
           </rect>
          </property>
@@ -104,9 +109,9 @@
         <widget class="QPushButton" name="SetNotification">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>0</x>
            <y>220</y>
-           <width>231</width>
+           <width>271</width>
            <height>61</height>
           </rect>
          </property>
@@ -173,9 +178,9 @@
         <widget class="QLabel" name="ProgramName">
          <property name="geometry">
           <rect>
-           <x>60</x>
+           <x>0</x>
            <y>70</y>
-           <width>131</width>
+           <width>281</width>
            <height>41</height>
           </rect>
          </property>
@@ -320,21 +325,21 @@
          <widget class="QPushButton" name="AddMoreButton">
           <property name="geometry">
            <rect>
-            <x>174</x>
-            <y>330</y>
-            <width>91</width>
+            <x>40</x>
+            <y>410</y>
+            <width>181</width>
             <height>31</height>
            </rect>
           </property>
           <property name="text">
-           <string>Add more</string>
+           <string>Add more Program</string>
           </property>
          </widget>
          <widget class="QPushButton" name="unlockButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>370</y>
+            <x>10</x>
+            <y>460</y>
             <width>231</width>
             <height>61</height>
            </rect>
@@ -362,9 +367,9 @@
          <widget class="QLineEdit" name="notificationTime">
           <property name="geometry">
            <rect>
-            <x>40</x>
-            <y>330</y>
-            <width>113</width>
+            <x>100</x>
+            <y>360</y>
+            <width>41</width>
             <height>25</height>
            </rect>
           </property>
@@ -373,12 +378,118 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>90</y>
+            <y>110</y>
             <width>256</width>
             <height>192</height>
            </rect>
           </property>
          </widget>
+         <widget class="QPushButton" name="NoNotifyButton">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>310</y>
+            <width>181</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>No notification on this program</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>340</y>
+            <width>47</width>
+            <height>13</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Or</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>360</y>
+            <width>91</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Notify me after</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_4">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>360</y>
+            <width>91</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>min of use</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>390</y>
+            <width>47</width>
+            <height>13</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Or</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="SetNotifyTime">
+          <property name="geometry">
+           <rect>
+            <x>220</x>
+            <y>360</y>
+            <width>41</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>set</string>
+          </property>
+         </widget>
+         <zorder>label_5</zorder>
+         <zorder>label_3</zorder>
+         <zorder>label_2</zorder>
+         <zorder>NoNotifyButton</zorder>
+         <zorder>label_4</zorder>
+         <zorder>locked</zorder>
+         <zorder>onlyOnThose</zorder>
+         <zorder>AddMoreButton</zorder>
+         <zorder>unlockButton</zorder>
+         <zorder>notificationTime</zorder>
+         <zorder>ListPrograms</zorder>
+         <zorder>SetNotifyTime</zorder>
         </widget>
         <widget class="QWidget" name="SettingPage" native="true">
          <property name="enabled">
@@ -388,8 +499,8 @@
           <rect>
            <x>0</x>
            <y>100</y>
-           <width>275</width>
-           <height>800</height>
+           <width>276</width>
+           <height>500</height>
           </rect>
          </property>
          <property name="minimumSize">
