@@ -177,6 +177,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.SettingPage.show()
 
 	def exit_button_clicked(self):
+		self.iconWindow.checkButtonIcon()
 		self.iconWindow.show()
 		self.hide()
 
@@ -274,7 +275,7 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
     	x = ag.width()-widget.width()
     	self.setFixedSize(ag.width(),  ag.height())
     	self.message.setFixedSize(ag.width()-100, ag.height()-100)
-    	self.move(0,0)
+    	self.move(0-20,0-20)
     	self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint|QtCore.Qt.FramelessWindowHint)
     	bWidget = self.okButton.geometry()
     	self.okButton.move(ag.width()/2-bWidget.width()/2,ag.height()-ag.height()/10)
