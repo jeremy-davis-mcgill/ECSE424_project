@@ -24,14 +24,14 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>50</pointsize>
+     <pointsize>75</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Box</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="text">
     <string>You've been browing X application for Y minutes!</string>
