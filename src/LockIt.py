@@ -118,6 +118,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
 		self.popUpButton.clicked.connect(lambda:self.popup_test_button_clicked())
+		self.minInput.setText("0")
 
 		global lockActive
 		if not lockActive:
