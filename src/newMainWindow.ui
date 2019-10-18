@@ -92,6 +92,11 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Lock the computer to this Program</string>
          </property>
@@ -114,6 +119,11 @@
            <width>271</width>
            <height>61</height>
           </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>Set Notification time on this program</string>
@@ -145,9 +155,9 @@
         <widget class="QLabel" name="CurrentProgram">
          <property name="geometry">
           <rect>
-           <x>60</x>
+           <x>10</x>
            <y>40</y>
-           <width>131</width>
+           <width>261</width>
            <height>41</height>
           </rect>
          </property>
@@ -260,9 +270,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-20</y>
             <width>271</width>
-            <height>61</height>
+            <height>71</height>
            </rect>
           </property>
           <property name="font">
@@ -285,6 +295,9 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
           <property name="margin">
            <number>2</number>
           </property>
@@ -295,7 +308,7 @@
             <x>0</x>
             <y>40</y>
             <width>271</width>
-            <height>51</height>
+            <height>71</height>
            </rect>
           </property>
           <property name="font">
@@ -317,6 +330,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
           <property name="margin">
            <number>2</number>
@@ -387,9 +403,9 @@
          <widget class="QPushButton" name="NoNotifyButton">
           <property name="geometry">
            <rect>
-            <x>40</x>
+            <x>10</x>
             <y>310</y>
-            <width>181</width>
+            <width>261</width>
             <height>31</height>
            </rect>
           </property>
