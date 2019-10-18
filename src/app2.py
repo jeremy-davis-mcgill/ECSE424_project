@@ -19,6 +19,7 @@ import psutil
 Ui_MainWindow, QtBaseClass = uic.loadUiType("newMainwindow.ui")
 Ui_SmallIconWindow, QtBaseClass = uic.loadUiType("iconWindow.ui")
 LandingPageUI, LandingPageBase = uic.loadUiType("popupwindow.ui")
+LandingPageUI1, LandingPageBase1 = uic.loadUiType("bigpopupwindow.ui")
 
 # Below, is a global list that can be used to store a snapshot of all process ids running at a given momemnt.
 process_dict = {}
@@ -116,6 +117,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.NoNotifyButton.clicked.connect(lambda:self.setNotificationTimeToInfinity())
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
+		self.popUpButton.clicked.connect(lambda:self.popup_test_button_clicked())
 
 		global lockActive
 		if not lockActive:
@@ -145,8 +147,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.stackedWidget.setCurrentIndex(0)
 
 	def popup_test_button_clicked(self):
-		self.child_win = PopupWindow(self)
-		self.child_win.show()
+		global isNotifyType1
+		if isNotifyType1:
+			self.child_win = PopupWindowBig(self)
+			self.child_win.show()
+		else:
+			self.child_win = PopupWindow(self)
+			self.child_win.show()
 
 	def lock_button_clicked(self, setted):
 		global lockActive
@@ -185,7 +192,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		if not filename == "":
 			index = self.ListPrograms.currentRow()
 		#filename[index] = ("%s" % (filename))
-			process_dict[filename] = 0
+			process_dict[filename] = "0"
 			self.renewItemList()
 
 	def setNotificationTimeToInfinity(self):
@@ -236,10 +243,43 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
     def __init__(self, parent=None):
-        super().__init__()
-        LandingPageBase.__init__(self, parent)
-        self.setupUi(self)    
-        self.okButton.clicked.connect(lambda: self.close_popup())
+    	global currentProcessName
+    	global process_dict
+    	super().__init__()
+    	LandingPageBase.__init__(self, parent)
+    	self.setupUi(self)
+    	self.message.setText("You have been using " + currentProcessName + 
+        	" for " + str(process_dict[currentProcessName]) + " min")    
+    	self.okButton.clicked.connect(lambda: self.close_popup())
+    	ag = QDesktopWidget().availableGeometry()
+    	widget = self.geometry()
+    	x = ag.width()-widget.width()
+    	self.move(x, 0)
+
+    def close_popup(self):
+    	self.close()
+
+class PopupWindowBig(LandingPageBase1, LandingPageUI1):                       
+    def __init__(self, parent=None):
+    	global currentProcessName
+    	global process_dict
+    	super().__init__()
+    	LandingPageBase.__init__(self)
+    	self.setupUi(self)
+    	self.message.setText("You have been using " + currentProcessName + 
+        	" for " + str(process_dict[currentProcessName]) + " min")    
+    	self.okButton.clicked.connect(lambda: self.close_popup())
+    	ag = QDesktopWidget().availableGeometry()
+    	widget = self.geometry()
+    	x = ag.width()-widget.width()
+    	self.setFixedSize(ag.width(),  ag.height())
+    	self.message.setFixedSize(ag.width()-100, ag.height()-100)
+    	self.move(0,0)
+    	self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint|QtCore.Qt.FramelessWindowHint)
+    	bWidget = self.okButton.geometry()
+    	self.okButton.move(ag.width()/2-bWidget.width()/2,ag.height()-ag.height()/10)
+    	self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+
 
     def close_popup(self):
     	self.close()
@@ -274,10 +314,6 @@ class WorkerObject(QtCore.QObject):
 			if lockActive == True:
 				print("Lock Active")
 				print("Scanning Processes")
-				def winEnumHandler( hwnd, ctx ):
-					if win32gui.IsWindowVisible( hwnd ):
-						print (hex(hwnd), win32gui.GetWindowText( hwnd ))
-				win32gui.EnumWindows( winEnumHandler, None )
 			sleep(1)
 		pass
 

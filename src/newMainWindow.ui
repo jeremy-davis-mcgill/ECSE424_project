@@ -338,8 +338,8 @@
          <widget class="QPushButton" name="unlockButton">
           <property name="geometry">
            <rect>
-            <x>10</x>
-            <y>460</y>
+            <x>20</x>
+            <y>470</y>
             <width>231</width>
             <height>61</height>
            </rect>
@@ -478,6 +478,31 @@
            <string>set</string>
           </property>
          </widget>
+         <widget class="QPushButton" name="popUpButton">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>530</y>
+            <width>231</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>popUpTest</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+         </widget>
          <zorder>label_5</zorder>
          <zorder>label_3</zorder>
          <zorder>label_2</zorder>
@@ -490,6 +515,7 @@
          <zorder>notificationTime</zorder>
          <zorder>ListPrograms</zorder>
          <zorder>SetNotifyTime</zorder>
+         <zorder>popUpButton</zorder>
         </widget>
         <widget class="QWidget" name="SettingPage" native="true">
          <property name="enabled">

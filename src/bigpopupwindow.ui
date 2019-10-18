@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>150</height>
+    <width>2000</width>
+    <height>2000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,26 +16,38 @@
   <widget class="QLabel" name="message">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>541</width>
-     <height>51</height>
+     <x>50</x>
+     <y>50</y>
+     <width>2000</width>
+     <height>2000</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>50</pointsize>
     </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
    </property>
    <property name="text">
     <string>You've been browing X application for Y minutes!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>80</y>
+     <x>410</x>
+     <y>540</y>
      <width>114</width>
      <height>32</height>
     </rect>
