@@ -1,13 +1,16 @@
 # Below, we import our libraries
 from PyQt5 import QtWidgets, QtCore, uic, QtGui
 from PyQt5.QtCore import QThread, QThreadPool, QFileInfo
-from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
+#from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
 from win32gui import GetWindowText, GetForegroundWindow
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from time import sleep
 import getpass
 import win32gui
 import win32process
 import math
+import time
 
 # Sys is imported so we can use the sleep() command
 import sys
@@ -30,6 +33,7 @@ currentProcessName = ""
 lockActive = False
 threadProcessRunning = False
 isNotifyType1 = True
+NotificatonTriggered = False
 
 # Below is a helper function for ther class WorkerObject
 def ignore_process(self, proc):
@@ -85,8 +89,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Below, we initialize the thread that continuously monitors the computer's processes
 	signal_start_background_job = QtCore.pyqtSignal()
-
-
 
 	# Below, we initialize the MyApp class
 	def __init__(self, icon):
@@ -241,14 +243,20 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
     def __init__(self, parent=None):
+    	print("1")
     	global currentProcessName
+    	print("2")
     	global process_dict
+    	print("3")
     	super().__init__()
-    	LandingPageBase.__init__(self, parent)
+    	print("4")
+    	#LandingPageBase.__init__(self, parent)
     	self.setupUi(self)
+    	print("5")
     	self.message.setText("You have been using " + currentProcessName + 
         	" for " + str(process_dict[currentProcessName]) + " min")    
     	self.okButton.clicked.connect(lambda: self.close_popup())
+    	print("6")
     	ag = QDesktopWidget().availableGeometry()
     	widget = self.geometry()
     	x = ag.width()-widget.width()
@@ -279,6 +287,8 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
 
 
     def close_popup(self):
+    	#global NotificatonTriggered
+    	#NotificatonTriggered = False
     	self.close()
 
 
@@ -286,17 +296,23 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
 class WorkerObject(QtCore.QObject):
 	@QtCore.pyqtSlot()
 	def __init__(self, mainWindow):
-		QtCore.QObject.__init__(self)
+		QtCore.QThread.__init__(self)
 		self.window = mainWindow
+		
+		# Here, we initialize our stopwatch info
+		self.startTime = 0
+		self.notificationTime = 0
+		self.currentTime = 0
+		self.timerRunning = False
 
-	
-
-		# Below, we have an infinite while loop so that the thread never terminates
+	# Below, we have an infinite while loop so that the thread never terminates
 	def background_job(self):
 		global processNum
 		global currentProcessName
 		self.window.setForegroundProgramName("Please click on the program")
+
 		while 1 < 2:
+		# Alway be running
 			foregroundWindow = GetForegroundWindow()
 			pid = win32process.GetWindowThreadProcessId(foregroundWindow)
 			theProcessName = psutil.Process(pid[-1]).name()
@@ -309,10 +325,50 @@ class WorkerObject(QtCore.QObject):
 				#todo
 				pass
 			if lockActive == True:
-				#todo
+				# Get all blacklisted PIDs
+				processIDs = []
+				for proc in process_dict.keys():
+					try:
+					# Get process name & pid from process object.
+						processIDs.append(proc)
+					except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+						pass
+        		# Check if the current foreground process is blacklisted, and has a notification time set
+				if currentProcessName in processIDs and process_dict[format(currentProcessName)] != math.inf:
+					# If the user is using a blacklisted app, start a stopwatch
+					if self.timerRunning == False:
+						print("Starting Timer")
+						startTime = time.time()
+						self.timerRunning = True
+					else:
+						currentTime = time.time()
+						elapedTime = currentTime-startTime
+						print("elapsed time: %d"%(elapedTime))
+
+						if elapedTime >= int(process_dict[format(currentProcessName)])*60:
+						#if elapedTime >= 5:
+							# If the elapsed time becomes greater than the notification time, trigger a popup
+								self.timerRunning = False
+								self.trigger_popup()
+
+				else:
+					print("Stopwatch paused")
+
+
 				pass
 			sleep(1)
 		pass
+	def trigger_popup(self):
+		print("triggering popup")	
+		global isNotifyType1
+		if isNotifyType1:
+			dialog = PopupWindowBig(self)
+			dialog.__init__()
+			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+			dialog.exec_()
+		else:
+			self.child_win = PopupWindow(self)
+			self.child_win.show()
 
 if __name__ == "__main__":
 	app=QtWidgets.QApplication.instance()
