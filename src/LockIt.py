@@ -33,6 +33,7 @@ currentProcessName = ""
 lockActive = False
 threadProcessRunning = False
 isNotifyType1 = True
+NotificatonTriggered = False
 
 # Below is a helper function for ther class WorkerObject
 def ignore_process(self, proc):
@@ -286,6 +287,8 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
 
 
     def close_popup(self):
+    	#global NotificatonTriggered
+    	#NotificatonTriggered = False
     	self.close()
 
 
@@ -345,9 +348,9 @@ class WorkerObject(QtCore.QObject):
 						#if elapedTime >= int(process_dict[format(currentProcessName)])*60:
 						if elapedTime >= 5:
 							# If the elapsed time becomes greater than the notification time, trigger a popup
-							self.timerRunning = False
-							self.emit(self.signal, "hi from thread")
-							#self.trigger_popup()
+								self.timerRunning = False
+								self.trigger_popup()
+
 				else:
 					print("Stopwatch paused")
 
@@ -359,10 +362,8 @@ class WorkerObject(QtCore.QObject):
 		print("triggering popup")	
 		global isNotifyType1
 		if isNotifyType1:
-			dialog = QDialog()
-			dialog.ui = PopupWindowBig(self)
+			dialog = PopupWindowBig(self)
 			dialog.__init__()
-			dialog.ui.setupUi(dialog)
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
 		else:
