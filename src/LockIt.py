@@ -275,8 +275,7 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
     	self.move(0-20,0-20)
     	self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint|QtCore.Qt.FramelessWindowHint)
     	bWidget = self.okButton.geometry()
-    	self.okButton.move(ag.width()/2-bWidget.width()/2,ag.height()-ag.height()/10)
-    	self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+    	self.okButton.move(ag.width()/2-bWidget.width()/2,ag.height()-ag.height()/4)
 
 
     def close_popup(self):
