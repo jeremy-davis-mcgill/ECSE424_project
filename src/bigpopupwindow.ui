@@ -16,6 +16,9 @@
   <property name="windowOpacity">
    <double>0.800000000000000</double>
   </property>
+  <property name="styleSheet">
+   <string notr="true">Background-color: rgb(200,0,0);</string>
+  </property>
   <widget class="QLabel" name="message">
    <property name="geometry">
     <rect>
@@ -32,6 +35,9 @@
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
@@ -54,6 +60,9 @@
      <width>251</width>
      <height>111</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">Background-color: rgb(255,255,255);</string>
    </property>
    <property name="text">
     <string>Ok</string>
