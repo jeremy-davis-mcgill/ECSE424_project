@@ -316,7 +316,7 @@ class WorkerObject(QtCore.QObject):
 			foregroundWindow = GetForegroundWindow()
 			pid = win32process.GetWindowThreadProcessId(foregroundWindow)
 			theProcessName = psutil.Process(pid[-1]).name()
-			if(theProcessName != "LockIt.exe"||theProcessName!="python.exe"):				
+			if(theProcessName != "LockIt.exe" and theProcessName!="python.exe"):				
 				if theProcessName != (currentProcessName):
 					currentProcessName = theProcessName
 					self.window.setForegroundProgramName(theProcessName)
@@ -367,8 +367,10 @@ class WorkerObject(QtCore.QObject):
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
 		else:
-			self.child_win = PopupWindow(self)
-			self.child_win.show()
+			dialog = PopupWindow(self)
+			dialog.__init__()
+			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+			dialog.exec_()
 
 if __name__ == "__main__":
 	app=QtWidgets.QApplication.instance()
