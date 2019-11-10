@@ -1,6 +1,6 @@
 # Below, we import our libraries
 from PyQt5 import QtWidgets, QtCore, uic, QtGui
-from PyQt5.QtCore import QThread, QThreadPool, QFileInfo
+from PyQt5.QtCore import QThread, QThreadPool, QFileInfo, QPoint
 #from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
 from win32gui import GetWindowText, GetForegroundWindow
 from PyQt5.QtGui import *
@@ -57,6 +57,7 @@ class Icon(QtWidgets.QMainWindow, Ui_SmallIconWindow):
 		self.checkButtonIcon()
 		self.OpenButton.clicked.connect(lambda: self.openWindow())
 		self.mainWindow = MyApp(self)
+		self.oldPos = self.pos()
 
 	def openWindow(self):
 		self.mainWindow.show()
@@ -81,6 +82,14 @@ class Icon(QtWidgets.QMainWindow, Ui_SmallIconWindow):
 			icon.addPixmap(QtGui.QPixmap("unlock.png"))
 		btn.setIcon(icon)
 		btn.setIconSize(QtCore.QSize(50,50))
+
+	def mousePressEvent(self, event):
+		self.oldPos = event.globalPos()
+
+	def mouseMoveEvent(self, event):
+		delta = QPoint (event.globalPos() - self.oldPos)
+		self.move(self.x() + delta.x(), self.y() + delta.y())
+		self.oldPos = event.globalPos()
 
 
 # Class MyApp
@@ -119,7 +128,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.NoNotifyButton.clicked.connect(lambda:self.setNotificationTimeToInfinity())
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
-		self.popUpButton.clicked.connect(lambda:self.popup_test_button_clicked())
 		self.minInput.setText("0")
 
 		global lockActive
@@ -314,12 +322,18 @@ class WorkerObject(QtCore.QObject):
 		while 1 < 2:
 		# Alway be running
 			foregroundWindow = GetForegroundWindow()
-			pid = win32process.GetWindowThreadProcessId(foregroundWindow)
-			theProcessName = psutil.Process(pid[-1]).name()
-			if(theProcessName != "LockIt.exe" and theProcessName!="python.exe"):				
-				if theProcessName != (currentProcessName):
-					currentProcessName = theProcessName
-					self.window.setForegroundProgramName(theProcessName)
+			tid,pid = win32process.GetWindowThreadProcessId(foregroundWindow)
+			print(pid)
+			try:
+				theProcessName = psutil.Process(pid).name()
+				print(theProcessName)
+				if(theProcessName != "LockIt.exe" and theProcessName!="python.exe"):				
+					if theProcessName != (currentProcessName):
+						currentProcessName = theProcessName
+						self.window.setForegroundProgramName(theProcessName)
+			except:
+				print("error catched")
+				pass
 			# Inside this while loop, we can scan all the processes using psutil
 			if lockActive == False:
 				#todo
