@@ -300,7 +300,7 @@ class WorkerObject(QtCore.QObject):
 			foregroundWindow = GetForegroundWindow()
 			pid = win32process.GetWindowThreadProcessId(foregroundWindow)
 			theProcessName = psutil.Process(pid[-1]).name()
-			if(theProcessName != "LockIt.exe"):				
+			if(theProcessName != "LockIt.exe"||theProcessName!="python.exe"):				
 				if theProcessName != (currentProcessName):
 					currentProcessName = theProcessName
 					self.window.setForegroundProgramName(theProcessName)
