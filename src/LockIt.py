@@ -345,8 +345,8 @@ class WorkerObject(QtCore.QObject):
 						elapedTime = currentTime-startTime
 						print("elapsed time: %d"%(elapedTime))
 
-						#if elapedTime >= int(process_dict[format(currentProcessName)])*60:
-						if elapedTime >= 5:
+						if elapedTime >= int(process_dict[format(currentProcessName)])*60:
+						#if elapedTime >= 5:
 							# If the elapsed time becomes greater than the notification time, trigger a popup
 								self.timerRunning = False
 								self.trigger_popup()
