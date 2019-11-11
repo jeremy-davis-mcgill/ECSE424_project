@@ -354,8 +354,8 @@
          <widget class="QPushButton" name="unlockButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>470</y>
+            <x>10</x>
+            <y>490</y>
             <width>231</width>
             <height>61</height>
            </rect>
@@ -494,29 +494,17 @@
            <string>set</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="popUpButton">
+         <widget class="QPushButton" name="RemoveButton">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>530</y>
-            <width>231</width>
-            <height>61</height>
+            <x>40</x>
+            <y>450</y>
+            <width>181</width>
+            <height>31</height>
            </rect>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="text">
-           <string>popUpTest</string>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
+           <string>Remove this Program</string>
           </property>
          </widget>
          <zorder>label_5</zorder>
@@ -531,7 +519,7 @@
          <zorder>notificationTime</zorder>
          <zorder>ListPrograms</zorder>
          <zorder>SetNotifyTime</zorder>
-         <zorder>popUpButton</zorder>
+         <zorder>RemoveButton</zorder>
         </widget>
         <widget class="QWidget" name="SettingPage" native="true">
          <property name="enabled">

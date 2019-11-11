@@ -125,6 +125,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.return_2.clicked.connect(lambda:self.return_button_clicked())
 		self.AddMoreButton.clicked.connect(lambda:self.AddMoreButton_clicked())
 		self.SetNotifyTime.clicked.connect(lambda:self.on_notificationTime_changed())
+		self.RemoveButton.clicked.connect(lambda:self.RemoveButton_clicked())
 		self.NoNotifyButton.clicked.connect(lambda:self.setNotificationTimeToInfinity())
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
@@ -206,13 +207,22 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 			process_dict[filename] = "0"
 			self.renewItemList()
 
+	def RemoveButton_clicked(self):
+		for item in self.ListPrograms.selectedItems():
+			currentText = item.text()
+			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
+			del process_dict[format(currentFileName[0])]
+		self.renewItemList()
+
+
+
 	def setNotificationTimeToInfinity(self):
 		global process_dict
 		for item in self.ListPrograms.selectedItems():
 			currentText = item.text()
 			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
 			process_dict[format(currentFileName[0])] = math.inf
-			self.renewItemList()
+		self.renewItemList()
 
 	def on_notificationTime_changed(self):
 		for item in self.ListPrograms.selectedItems():
