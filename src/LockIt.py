@@ -179,6 +179,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 				process_dict[format(currentProcessName)] = math.inf
 			self.SettingPage.hide()
 			self.showLockedPage()
+		else:
+			self.ProgramName.setStyleSheet('QLabel { color: red }')
 
 	def unlock_button_clicked(self):
 		global lockActive
@@ -186,7 +188,10 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.LockedPage.hide()
 
 	def setNotification_button_clicked(self):
-		self.SettingPage.show()
+		if currentProcessName == "":
+			self.ProgramName.setStyleSheet('QLabel { color: red }')
+		else:
+			self.SettingPage.show()
 
 	def exit_button_clicked(self):
 		self.iconWindow.checkButtonIcon()
@@ -233,6 +238,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
 	def setForegroundProgramName(self, theProcessName):
 		self.ProgramName.setText(theProcessName)
+		self.ProgramName.setStyleSheet('QLabel { color: black }')
 
 	def checkBoxClicked(self, checkBoxNum):
 		global isNotifyType1
