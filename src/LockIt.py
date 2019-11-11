@@ -1,6 +1,6 @@
 # Below, we import our libraries
 from PyQt5 import QtWidgets, QtCore, uic, QtGui
-from PyQt5.QtCore import QThread, QThreadPool, QFileInfo, QPoint
+from PyQt5.QtCore import QThread, QThreadPool, QFileInfo, QPoint, QDir
 #from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
 from win32gui import GetWindowText, GetForegroundWindow
 from PyQt5.QtGui import *
@@ -11,6 +11,7 @@ import win32gui
 import win32process
 import math
 import time
+from os.path import expanduser
 
 # Sys is imported so we can use the sleep() command
 import sys
@@ -204,7 +205,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 	def AddMoreButton_clicked(self):
 		global filename
 		global process_dict
-		fname, _ = QFileDialog.getOpenFileName(self, 'Open file', '/home')
+
+
+
+		fname, _ = QFileDialog.getOpenFileName(self, 'Open file',expanduser("~/Desktop") ,'/home')
+
+		
 		filename = QFileInfo(fname).fileName()
 		if not filename == "":
 			index = self.ListPrograms.currentRow()
@@ -221,8 +227,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 				currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
 				del process_dict[format(currentFileName[0])]
 			self.renewItemList()
-
-
 
 	def setNotificationTimeToInfinity(self):
 		global process_dict
@@ -263,7 +267,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 	def showLockedPage(self):
 		self.renewItemList()
 		self.LockedPage.show()
-
 
 	def renewItemList(self):
 		self.ListPrograms.clear()
