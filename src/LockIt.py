@@ -405,10 +405,12 @@ class WorkerObject(QtCore.QObject):
 		global isNotifyType1
 		if isNotifyType1:
 			dialog = PopupWindowBig(self)
+			dialog.__init__()
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
 		else:
 			dialog = PopupWindow(self)
+			dialog.__init__()
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
 
