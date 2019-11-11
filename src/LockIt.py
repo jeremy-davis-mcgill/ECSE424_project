@@ -213,27 +213,36 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 			self.renewItemList()
 
 	def RemoveButton_clicked(self):
-		for item in self.ListPrograms.selectedItems():
-			currentText = item.text()
-			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
-			del process_dict[format(currentFileName[0])]
-		self.renewItemList()
+		if not self.ListPrograms.selectedItems():
+			self.SelectOnProgram.setStyleSheet('QLabel { color: red }')
+		else:
+			for item in self.ListPrograms.selectedItems():
+				currentText = item.text()
+				currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
+				del process_dict[format(currentFileName[0])]
+			self.renewItemList()
 
 
 
 	def setNotificationTimeToInfinity(self):
 		global process_dict
-		for item in self.ListPrograms.selectedItems():
-			currentText = item.text()
-			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
-			process_dict[format(currentFileName[0])] = math.inf
-		self.renewItemList()
+		if not self.ListPrograms.selectedItems():
+			self.SelectOnProgram.setStyleSheet('QLabel { color: red }')
+		else:
+			for item in self.ListPrograms.selectedItems():
+				currentText = item.text()
+				currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
+				process_dict[format(currentFileName[0])] = math.inf
+			self.renewItemList()
 
 	def on_notificationTime_changed(self):
-		for item in self.ListPrograms.selectedItems():
-			currentText = item.text()
-			currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
-			process_dict[format(currentFileName[0])] = self.notificationTime.text()
+		if not self.ListPrograms.selectedItems():
+			self.SelectOnProgram.setStyleSheet('QLabel { color: red }')
+		else:
+			for item in self.ListPrograms.selectedItems():
+				currentText = item.text()
+				currentFileName = [currentFileName.strip() for currentFileName in currentText.split()]
+				process_dict[format(currentFileName[0])] = self.notificationTime.text()
 			self.renewItemList()
 
 	def setForegroundProgramName(self, theProcessName):

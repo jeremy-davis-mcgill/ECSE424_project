@@ -302,7 +302,7 @@
            <number>2</number>
           </property>
          </widget>
-         <widget class="QLabel" name="onlyOnThose">
+         <widget class="QLabel" name="SelectOnProgram">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -323,7 +323,7 @@
            <number>2</number>
           </property>
           <property name="text">
-           <string>You can now only work on those programs</string>
+           <string>Select A program in the list to adjust the notification time</string>
           </property>
           <property name="textFormat">
            <enum>Qt::RichText</enum>
@@ -479,7 +479,7 @@
          <zorder>NoNotifyButton</zorder>
          <zorder>label_4</zorder>
          <zorder>locked</zorder>
-         <zorder>onlyOnThose</zorder>
+         <zorder>SelectOnProgram</zorder>
          <zorder>AddMoreButton</zorder>
          <zorder>unlockButton</zorder>
          <zorder>notificationTime</zorder>
