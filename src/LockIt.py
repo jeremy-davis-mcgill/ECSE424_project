@@ -205,9 +205,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 	def AddMoreButton_clicked(self):
 		global filename
 		global process_dict
-
-
-
 		fname, _ = QFileDialog.getOpenFileName(self, 'Open file',expanduser("~/Desktop") ,'/home')
 
 		
@@ -279,20 +276,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 # The class below is responsible for the popup window 
 class PopupWindow(LandingPageBase, LandingPageUI):                       
     def __init__(self, parent=None):
-    	print("1")
-    	global currentProcessName
-    	print("2")
-    	global process_dict
-    	print("3")
     	super().__init__()
-    	print("4")
-    	#LandingPageBase.__init__(self, parent)
     	self.setupUi(self)
-    	print("5")
+    	global currentProcessName
+    	global process_dict
     	self.message.setText("You have been using " + currentProcessName + 
         	" for " + str(process_dict[currentProcessName]) + " min")    
     	self.okButton.clicked.connect(lambda: self.close_popup())
-    	print("6")
     	ag = QDesktopWidget().availableGeometry()
     	widget = self.geometry()
     	x = ag.width()-widget.width()
@@ -303,11 +293,10 @@ class PopupWindow(LandingPageBase, LandingPageUI):
 
 class PopupWindowBig(LandingPageBase1, LandingPageUI1):                       
     def __init__(self, parent=None):
+    	super().__init__()
+    	self.setupUi(self)
     	global currentProcessName
     	global process_dict
-    	super().__init__()
-    	LandingPageBase.__init__(self)
-    	self.setupUi(self)
     	self.message.setText("You have been using " + currentProcessName + 
         	" for " + str(process_dict[currentProcessName]) + " min")    
     	self.okButton.clicked.connect(lambda: self.close_popup())
@@ -323,8 +312,6 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
 
 
     def close_popup(self):
-    	#global NotificatonTriggered
-    	#NotificatonTriggered = False
     	self.close()
 
 
@@ -375,8 +362,8 @@ class WorkerObject(QtCore.QObject):
 						processIDs.append(proc)
 					except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
 						pass
-        		# Check if the current foreground process is blacklisted, and has a notification time set
-				if currentProcessName in processIDs and process_dict[format(currentProcessName)] != math.inf:
+				# Check if the current foreground process is blacklisted, and has a notification time set
+				if currentProcessName in processIDs and process_dict[format(currentProcessName)] != math.inf and NotificatonTriggered == False:
 					# If the user is using a blacklisted app, start a stopwatch
 					if self.timerRunning == False:
 						print("Starting Timer")
@@ -391,6 +378,7 @@ class WorkerObject(QtCore.QObject):
 						#if elapedTime >= 5:
 							# If the elapsed time becomes greater than the notification time, trigger a popup
 								self.timerRunning = False
+								#NotificatonTriggered = True;
 								self.trigger_popup()
 
 				else:
@@ -408,11 +396,13 @@ class WorkerObject(QtCore.QObject):
 			dialog.__init__()
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
+			time.sleep(2)
 		else:
 			dialog = PopupWindow(self)
 			dialog.__init__()
 			dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 			dialog.exec_()
+			time.sleep(2)
 
 if __name__ == "__main__":
 	app=QtWidgets.QApplication.instance()
