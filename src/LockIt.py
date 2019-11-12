@@ -205,8 +205,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 	def AddMoreButton_clicked(self):
 		global filename
 		global process_dict
-		fname, _ = QFileDialog.getOpenFileName(self, 'Open file',expanduser("~/Desktop") ,'/home')
 
+		fname, _ = QFileDialog.getOpenFileName(self, 'Open file',expanduser("~/Desktop"))
 		
 		filename = QFileInfo(fname).fileName()
 		if not filename == "":
