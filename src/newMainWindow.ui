@@ -293,7 +293,7 @@
            </rect>
           </property>
           <property name="text">
-           <string>Add more Program</string>
+           <string>Add another Program</string>
           </property>
          </widget>
          <widget class="QPushButton" name="unlockButton">

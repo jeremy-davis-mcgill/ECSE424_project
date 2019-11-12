@@ -128,7 +128,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.RemoveButton.clicked.connect(lambda:self.RemoveButton_clicked())
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
-		self.minInput.setText("0")
+		self.minInput.setText("10")
 
 		global lockActive
 		if not lockActive:
@@ -210,7 +210,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		if not filename == "":
 			index = self.ListPrograms.currentRow()
 		#filename[index] = ("%s" % (filename))
-			process_dict[filename] = "0"
+			process_dict[filename] = "10"
 			self.renewItemList()
 
 	def RemoveButton_clicked(self):
