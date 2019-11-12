@@ -284,7 +284,7 @@ class PopupWindow(LandingPageBase, LandingPageUI):
     	ag = QDesktopWidget().availableGeometry()
     	widget = self.geometry()
     	x = ag.width()-widget.width()
-    	self.move(x, 0)
+    	self.move(x-300, 0)
 
     def close_popup(self):
     	self.close()
