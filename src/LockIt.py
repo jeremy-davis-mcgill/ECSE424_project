@@ -119,7 +119,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		# Here, we link the buttons of the main page to the functions below
 		self.back_page_Button.clicked.connect(lambda: self.back_button_clicked())
 		self.exitButton.clicked.connect(lambda: self.exit_button_clicked())
-		self.lockToProgram.clicked.connect(lambda:self.lock_button_clicked(False))
 		self.SetNotification.clicked.connect(lambda:self.setNotification_button_clicked())
 		self.setAndLock.clicked.connect(lambda: self.lock_button_clicked(True))
 		self.unlockButton.clicked.connect(lambda:self.unlock_button_clicked())
@@ -127,7 +126,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.AddMoreButton.clicked.connect(lambda:self.AddMoreButton_clicked())
 		self.SetNotifyTime.clicked.connect(lambda:self.on_notificationTime_changed())
 		self.RemoveButton.clicked.connect(lambda:self.RemoveButton_clicked())
-		self.NoNotifyButton.clicked.connect(lambda:self.setNotificationTimeToInfinity())
 		self.checkBox1.clicked.connect(lambda:self.checkBoxClicked(1))
 		self.checkBox2.clicked.connect(lambda:self.checkBoxClicked(2))
 		self.minInput.setText("0")
@@ -332,6 +330,7 @@ class WorkerObject(QtCore.QObject):
 	def background_job(self):
 		global processNum
 		global currentProcessName
+		previousProcessName = currentProcessName
 		self.window.setForegroundProgramName("Please click on the program")
 
 		while 1 < 2:
@@ -365,7 +364,8 @@ class WorkerObject(QtCore.QObject):
 				# Check if the current foreground process is blacklisted, and has a notification time set
 				if currentProcessName in processIDs and process_dict[format(currentProcessName)] != math.inf and NotificatonTriggered == False:
 					# If the user is using a blacklisted app, start a stopwatch
-					if self.timerRunning == False:
+					if self.timerRunning == False or not previousProcessName == currentProcessName:
+						previousProcessName = currentProcessName
 						print("Starting Timer")
 						startTime = time.time()
 						self.timerRunning = True
