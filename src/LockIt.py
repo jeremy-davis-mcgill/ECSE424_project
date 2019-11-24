@@ -35,6 +35,7 @@ lockActive = False
 threadProcessRunning = False
 isNotifyType1 = True
 NotificatonTriggered = False
+goalToday = ""
 
 # Below is a helper function for ther class WorkerObject
 def ignore_process(self, proc):
@@ -119,10 +120,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		# Here, we link the buttons of the main page to the functions below
 		self.back_page_Button.clicked.connect(lambda: self.back_button_clicked())
 		self.exitButton.clicked.connect(lambda: self.exit_button_clicked())
+		self.closeButton.clicked.connect(QtWidgets.qApp.quit)
 		self.SetNotification.clicked.connect(lambda:self.setNotification_button_clicked())
 		self.setAndLock.clicked.connect(lambda: self.lock_button_clicked(True))
 		self.unlockButton.clicked.connect(lambda:self.unlock_button_clicked())
 		self.return_2.clicked.connect(lambda:self.return_button_clicked())
+		self.AddCurrentButton.clicked.connect(lambda:self.AddCurrentButton_clicked())
 		self.AddMoreButton.clicked.connect(lambda:self.AddMoreButton_clicked())
 		self.SetNotifyTime.clicked.connect(lambda:self.on_notificationTime_changed())
 		self.RemoveButton.clicked.connect(lambda:self.RemoveButton_clicked())
@@ -170,7 +173,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 		global lockActive
 		global currentProcessName
 		global process_dict
+		global goalToday
 		lockActive = True
+		goalToday = self.goalInput.text()
 		if not currentProcessName == "":
 			if(setted):
 				process_dict[format(currentProcessName)] = self.minInput.text()
@@ -199,6 +204,17 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
 	def return_button_clicked(self):
 		self.SettingPage.hide()
+
+	def AddCurrentButton_clicked(self):
+		global currentProcessName
+		global process_dict
+
+		if(currentProcessName in process_dict):
+			print("inlist")
+		else:
+			process_dict[currentProcessName] = "10"
+			self.renewItemList()
+			print("not in list")
 
 	def AddMoreButton_clicked(self):
 		global filename
@@ -295,8 +311,9 @@ class PopupWindowBig(LandingPageBase1, LandingPageUI1):
     	self.setupUi(self)
     	global currentProcessName
     	global process_dict
+    	global goalToday
     	self.message.setText("You have been using " + currentProcessName + 
-        	" for " + str(process_dict[currentProcessName]) + " min")    
+        	" for " + str(process_dict[currentProcessName]) + " min, remember your goal today is " + goalToday)    
     	self.okButton.clicked.connect(lambda: self.close_popup())
     	ag = QDesktopWidget().availableGeometry()
     	widget = self.geometry()
